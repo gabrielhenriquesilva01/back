@@ -1,12 +1,12 @@
 package com.senai.usuario.model;
 
 public class UsuarioModel {
-    private int id;
+    private Long id;
     private String nome;
     private String login;
     private String senha;
 
-    public UsuarioModel(int id, String nome, String login, String senha) {
+    public UsuarioModel(Long id, String nome, String login, String senha) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -17,11 +17,11 @@ public class UsuarioModel {
 
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,9 +1,9 @@
 package com.senai.usuario.dtos;
 
-public class RespostaDTO extends ProdutoResponseDTO {
+public class CategoriaResponseDTO {
     private String mensagem;
 
-    public RespostaDTO() {
+    public CategoriaResponseDTO() {
     }
 
     public String getMensagem() {

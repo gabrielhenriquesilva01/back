@@ -32,7 +32,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/usuario/{id}")
-    public ResponseEntity<RespostaDTO> atualizar(@PathVariable int id, @RequestBody RequisicaoDTO dados){
+    public ResponseEntity<RespostaDTO> atualizar(@PathVariable Long id, @RequestBody RequisicaoDTO dados){
         RespostaDTO respostaDTO = service.atualizar(id, dados);
         if (respostaDTO.getMensagem().equals("sucesso")){
             respostaDTO.setMensagem("Usuário atualizado com sucesso!");
@@ -43,7 +43,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<UsuarioDTO>> localizar(@PathVariable int id){
+    public ResponseEntity<List<UsuarioDTO>> localizar(@PathVariable Long id){
         return ResponseEntity.ok().body(service.localizar(id));
     }
 

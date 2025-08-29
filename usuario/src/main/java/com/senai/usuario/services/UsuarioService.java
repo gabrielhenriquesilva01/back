@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class UsuarioService {
     private List<UsuarioModel> listaUsuario = new ArrayList<>();
-    private int ultimoID = 0;
 
     public RespostaDTO criar(RequisicaoDTO dados) {
         for (UsuarioModel u : listaUsuario){
@@ -23,9 +21,8 @@ public class UsuarioService {
                 return resposta;
             }
         }
-            ultimoID += 1;
             UsuarioModel usuarioModel = new UsuarioModel();
-            usuarioModel.setId(ultimoID);
+            usuarioModel.setId(usuarioModel.getId());
             usuarioModel.setLogin(dados.getLogin());
             usuarioModel.setNome(dados.getNome());
             usuarioModel.setSenha(dados.getSenha());
@@ -36,7 +33,17 @@ public class UsuarioService {
             return resposta;
     }
 
-        public RespostaDTO atualizar(int id, RequisicaoDTO dados){
+        public RespostaDTO atualizar(Long id, RequisicaoDTO dados){
+            for (UsuarioModel u : listaUsuario){
+                // Verificação de Login
+                if (u.getId() != id) {
+                    if ( u.getLogin().equals(dados.getLogin()) ) {
+                        RespostaDTO resposta = new RespostaDTO();
+                        resposta.setMensagem("USUÁRIO JÁ EXISTE!");
+                        return resposta;
+                    }
+                }
+            }
             for (UsuarioModel u : listaUsuario){
                 if (u.getId() == id){
                     u.setId(id);
@@ -50,16 +57,13 @@ public class UsuarioService {
                         return resposta;
                     }
                 }
-                RespostaDTO resposta = new RespostaDTO();
-                resposta.setMensagem("ESTE LOGIN JÁ EXISTE!");
-                return resposta;
             }
             RespostaDTO resposta = new RespostaDTO();
             resposta.setMensagem("USUÁRIO NÃO ENCONTRADO!");
             return resposta;
         }
 
-        public List<UsuarioDTO> localizar(int id){
+        public List<UsuarioDTO> localizar(Long id){
             for (UsuarioModel u : listaUsuario) {
                 if (u.getId() == id){
                     UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -100,5 +104,20 @@ public class UsuarioService {
             RespostaDTO resposta = new RespostaDTO();
             resposta.setMensagem("USUÁRIO NÃO ENCONTRADO!");
             return resposta;
+    }
+
+    public RespostaDTO login(RequisicaoDTO dados){
+        for (UsuarioModel u : listaUsuario) {
+            if (u.getLogin().equals(dados.getLogin())) {
+                if (u.getSenha().equals(dados.getSenha())){
+                    RespostaDTO resposta = new RespostaDTO();
+                    resposta.setMensagem("sucesso");
+                    return resposta;
+                }
+            }
+        }
+        RespostaDTO resposta = new RespostaDTO();
+        resposta.setMensagem("erro");
+        return resposta;
     }
 }
