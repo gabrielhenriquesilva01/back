@@ -1,6 +1,7 @@
 package com.senai.usuario.services;
 
 import com.senai.usuario.dtos.CategoriaDTO;
+import com.senai.usuario.dtos.CategoriaRequestDTO;
 import com.senai.usuario.dtos.CategoriaResponseDTO;
 import com.senai.usuario.dtos.ProdutoRequestDTO;
 import com.senai.usuario.model.CategoriaModel;
@@ -14,7 +15,7 @@ public class CategoriaService {
     List<CategoriaModel> categoriaModelList = new ArrayList<>();
     private int cont = 0;
 
-    public CategoriaResponseDTO criarCategoria(ProdutoRequestDTO dados){
+    public CategoriaResponseDTO criarCategoria(CategoriaRequestDTO dados){
         for (CategoriaModel u : categoriaModelList){
             if (u.getNome().equals(dados.getNome())){
                 CategoriaResponseDTO resposta = new CategoriaResponseDTO();

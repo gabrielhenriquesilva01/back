@@ -3,15 +3,18 @@ package com.senai.usuario.services;
 import com.senai.usuario.dtos.ProdutoDTO;
 import com.senai.usuario.dtos.ProdutoRequestDTO;
 import com.senai.usuario.dtos.ProdutoResponseDTO;
+import com.senai.usuario.model.CategoriaModel;
 import com.senai.usuario.model.ProdutoModel;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProdutoService {
     List<ProdutoModel> list = new ArrayList<>();
+    List<CategoriaModel> listCategorias = new ArrayList<>();
     private int cont = 0;
 
     public ProdutoResponseDTO criarProduto(ProdutoRequestDTO dados){
@@ -28,13 +31,27 @@ public class ProdutoService {
         produtoModel.setNome(dados.getNome());
         produtoModel.setPreco(dados.getPreco());
         produtoModel.setCategoriaID(dados.getCategoriaID());
-        list.add(produtoModel);
+
+        for (CategoriaModel c : listCategorias) {
+            if (dados.getCategoriaID().equals(c.getId())){
+                list.add(produtoModel);
+                ProdutoResponseDTO resposta = new ProdutoResponseDTO();
+                resposta.setMensagem("sucesso");
+                resposta.setId((long) cont);
+                resposta.setNome(dados.getNome());
+                resposta.setPreco(dados.getPreco());
+                resposta.setCategoriaID(dados.getCategoriaID());
+                return resposta;
+
+            }else if (produtoModel.getCategoriaID() == null){
+                ProdutoResponseDTO resposta = new ProdutoResponseDTO();
+                resposta.setMensagem("INSIRA UMA CATEGORIA!");
+                return resposta;
+            }
+        }
+
         ProdutoResponseDTO resposta = new ProdutoResponseDTO();
-        resposta.setMensagem("sucesso");
-        resposta.setId((long) cont);
-        resposta.setNome(dados.getNome());
-        resposta.setPreco(dados.getPreco());
-        resposta.setCategoriaID(dados.getCategoriaID());
+        resposta.setMensagem("CATEGORIA NÃO ENCONTRADA!");
         return resposta;
     }
 

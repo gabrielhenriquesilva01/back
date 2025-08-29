@@ -1,7 +1,5 @@
 package com.senai.usuario.dtos;
 
-import com.senai.usuario.model.CategoriaModel;
-
 public class ProdutoDTO {
     private Long id;
     private String nome;

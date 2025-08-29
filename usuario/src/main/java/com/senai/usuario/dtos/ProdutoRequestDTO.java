@@ -1,7 +1,5 @@
 package com.senai.usuario.dtos;
 
-import com.senai.usuario.model.CategoriaModel;
-
 public class ProdutoRequestDTO {
     private String nome;
     private Double preco;
