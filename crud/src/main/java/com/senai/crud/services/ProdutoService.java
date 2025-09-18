@@ -89,6 +89,7 @@ public class ProdutoService {
                 produtoDTO.setId(model.get().getId());
                 produtoDTO.setNome(model.get().getNome());
                 produtoDTO.setPreco(model.get().getPreco());
+                produtoDTO.setCategoriaID(model.get().getCategoriaModel().getId());
                 return produtoDTO;
             }
             return produtoDTO;
@@ -103,6 +104,7 @@ public class ProdutoService {
                 produtos.setId(produto.getId());
                 produtos.setNome(produto.getNome());
                 produtos.setPreco(produto.getPreco());
+                produtos.setCategoriaID(produto.getCategoriaModel().getId());
                 produtoDTO.add(produtos);
             }
             return produtoDTO;
