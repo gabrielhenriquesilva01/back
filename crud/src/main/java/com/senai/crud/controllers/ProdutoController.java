@@ -21,7 +21,7 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<RespostaDto> criarProduto(@RequestBody ProdutoRequisiçãoDTO dados){
+    public ResponseEntity<RespostaDto> criarProduto(@RequestBody ProdutoDTO dados){
         RespostaDto respostaDto = service.criarProduto(dados);
 
         if (respostaDto.getMensagem().equals("sucesso")){
@@ -33,7 +33,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RespostaDto> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequisiçãoDTO dados){
+    public ResponseEntity<RespostaDto> atualizarProduto(@PathVariable Long id, @RequestBody ProdutoDTO dados){
         RespostaDto respostaDto = service.atualizarProduto(id, dados);
 
         if (respostaDto.getMensagem().equals("sucesso")){

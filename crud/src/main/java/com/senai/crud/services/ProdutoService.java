@@ -3,7 +3,9 @@ package com.senai.crud.services;
 import com.senai.crud.dtos.ProdutoDTO;
 import com.senai.crud.dtos.ProdutoRequisiçãoDTO;
 import com.senai.crud.dtos.RespostaDto;
+import com.senai.crud.models.CategoriaModel;
 import com.senai.crud.models.ProdutoModel;
+import com.senai.crud.repositories.CategoriaRepository;
 import com.senai.crud.repositories.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +16,32 @@ import java.util.Optional;
 @Service
 public class ProdutoService {
         private final ProdutoRepository repository;
+        private final CategoriaRepository categoriaRepository;
 
-    public ProdutoService(ProdutoRepository repository) {
+    public ProdutoService(ProdutoRepository repository, CategoriaRepository categoriaRepository) {
         this.repository = repository;
+        this.categoriaRepository = categoriaRepository;
     }
 
-    public RespostaDto criarProduto(ProdutoRequisiçãoDTO dados){
+    public RespostaDto criarProduto(ProdutoDTO dados) {
+
+        Optional<CategoriaModel> categoriaModel = categoriaRepository.findById(dados.getCategoriaID());
+
+        if ( categoriaModel.isPresent() ) {
             ProdutoModel produto = new ProdutoModel();
             produto.setNome(dados.getNome());
             produto.setPreco(dados.getPreco());
-            produto.setCategoriaID(dados.getCategoriaId());
+            produto.setCategoriaModel(categoriaModel.get());
             repository.save(produto);
 
-            RespostaDto resposta = new  RespostaDto();
+            RespostaDto resposta = new RespostaDto();
             resposta.setMensagem("sucesso");
-            return resposta ;
+            return resposta;
         }
+        RespostaDto resposta = new  RespostaDto();
+        resposta.setMensagem("Não foi possível criar o produto");
+        return resposta ;
+    }
 
         public RespostaDto excluirProduto(Long id){
             Optional<ProdutoModel> model = repository.findById(id);
@@ -45,22 +57,28 @@ public class ProdutoService {
             return resposta ;
         }
 
-        public RespostaDto atualizarProduto(Long id, ProdutoRequisiçãoDTO dados){
+        public RespostaDto atualizarProduto(Long id, ProdutoDTO dados){
+
+        Optional<CategoriaModel> categoriaModel = categoriaRepository.findById(dados.getCategoriaID());
+        if (categoriaModel.isPresent()) {
             Optional<ProdutoModel> model = repository.findById(id);
 
-            if (model.isPresent()){
+            if ( model.isPresent() ) {
                 ProdutoModel produto = model.get();
                 produto.setNome(dados.getNome());
                 produto.setPreco(dados.getPreco());
-                produto.setCategoriaID(dados.getCategoriaId());
                 repository.save(produto);
-                RespostaDto resposta = new  RespostaDto();
+                RespostaDto resposta = new RespostaDto();
                 resposta.setMensagem("sucesso");
-                return resposta ;
+                return resposta;
             }
-            RespostaDto resposta = new  RespostaDto();
+            RespostaDto resposta = new RespostaDto();
             resposta.setMensagem("Não foi possível atualziar o produto id = " + id);
-            return resposta ;
+            return resposta;
+        }
+            RespostaDto resposta = new RespostaDto();
+            resposta.setMensagem("Não foi possível localizar a categoria");
+            return resposta;
         }
 
         public ProdutoDTO obterProduto(Long id){
@@ -71,7 +89,6 @@ public class ProdutoService {
                 produtoDTO.setId(model.get().getId());
                 produtoDTO.setNome(model.get().getNome());
                 produtoDTO.setPreco(model.get().getPreco());
-                produtoDTO.setCategoriaID(model.get().getCategoriaID());
                 return produtoDTO;
             }
             return produtoDTO;
@@ -86,7 +103,6 @@ public class ProdutoService {
                 produtos.setId(produto.getId());
                 produtos.setNome(produto.getNome());
                 produtos.setPreco(produto.getPreco());
-                produtos.setCategoriaID(produto.getCategoriaID());
                 produtoDTO.add(produtos);
             }
             return produtoDTO;

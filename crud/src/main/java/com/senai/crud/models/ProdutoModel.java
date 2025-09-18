@@ -13,8 +13,8 @@ public class ProdutoModel {
     private String nome;
     @Column(name = "preço")
     private double preco;
-    @Column(name = "id da categoria")
-    private Long categoriaID;
+    @ManyToOne
+    private CategoriaModel categoriaModel;
 
     public ProdutoModel() {
     }
@@ -43,11 +43,11 @@ public class ProdutoModel {
         this.preco = preco;
     }
 
-    public Long getCategoriaID() {
-        return categoriaID;
+    public CategoriaModel getCategoriaModel() {
+        return categoriaModel;
     }
 
-    public void setCategoriaID(Long categoriaID) {
-        this.categoriaID = categoriaID;
+    public void setCategoriaModel(CategoriaModel categoriaModel) {
+        this.categoriaModel = categoriaModel;
     }
 }

@@ -1,9 +1,11 @@
 package com.senai.crud.dtos;
 
+import com.senai.crud.models.CategoriaModel;
+
 public class ProdutoRequisiçãoDTO {
     private String nome;
     private double preco;
-    private Long categoriaId;
+    private Long categoriaModel;
 
     public ProdutoRequisiçãoDTO() {
     }
@@ -25,10 +27,10 @@ public class ProdutoRequisiçãoDTO {
     }
 
     public Long getCategoriaId() {
-        return categoriaId;
+        return categoriaModel;
     }
 
     public void setCategoriaId(Long categoriaId) {
-        this.categoriaId = categoriaId;
+        this.categoriaModel = categoriaId;
     }
 }
