@@ -1,28 +1,22 @@
-package com.senai.task.Models;
+package com.senai.task.dtos;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
 import java.util.Date;
 
-@Entity
-@Table(name = "tarefa")
-public class TarefaModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TarefaDTO {
     private Long id;
-    @Column(name = "Título")
+    @Column(nullable = false)
     private String titulo;
-    @Column(name = "Descrição")
+    @Column(nullable = false)
     private String descricao;
-    @Column(name = "Data de Agendamento")
+    @Column(nullable = false)
     private Date dataAgendamento;
-    @Column(name = "Status")
     private String status;
-    @ManyToOne
-    private UsuarioModel usuario;
+    @Column(nullable = false)
+    private String emailUsuario;
 
-    public TarefaModel() {
+    public TarefaDTO() {
     }
 
     public Long getId() {
@@ -65,11 +59,11 @@ public class TarefaModel {
         this.status = status;
     }
 
-    public UsuarioModel getUsuario() {
-        return usuario;
+    public String getEmailUsuario() {
+        return emailUsuario;
     }
 
-    public void setUsuario(UsuarioModel usuario) {
-        this.usuario = usuario;
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
     }
 }
