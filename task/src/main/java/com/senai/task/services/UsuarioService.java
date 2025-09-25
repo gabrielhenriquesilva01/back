@@ -63,7 +63,13 @@ public class UsuarioService {
 
     public RespostaDTO deletarUsuario(String email){
         Optional<UsuarioModel> model = usuarioRepository.findByEmail(email);
+        boolean possuiTarefas = tarefaRepository.existsByUsuarioEmail(email);
 
+        if (possuiTarefas) {
+            RespostaDTO respostaDTO = new RespostaDTO();
+            respostaDTO.setMensagem("vinculado");
+            return respostaDTO;
+        }
         if (model.isPresent()) {
             UsuarioModel usuarioModel = model.get();
             usuarioRepository.delete(usuarioModel);

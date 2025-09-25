@@ -24,11 +24,11 @@ public class UsuarioController {
     public ResponseEntity<RespostaDTO> criarUsuario(@RequestBody UsuarioDTO dados) {
         RespostaDTO respostaDTO = (service.criarUsuario(dados));
         if (respostaDTO.getMensagem().equals("sucesso")) {
-            respostaDTO.setMensagem("Usuario criado com sucesso!");
+            respostaDTO.setMensagem("Usuário inserido com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
         }else{
             respostaDTO.setMensagem("Este usuário já existe!");
-            return ResponseEntity.badRequest().body(respostaDTO);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(respostaDTO);
         }
     }
 
@@ -39,13 +39,13 @@ public class UsuarioController {
             respostaDTO.setMensagem("Usuario atualizado com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
         }else if (respostaDTO.getMensagem().equals("email")) {
-            respostaDTO.setMensagem("Este E-mail já existe!");
+            respostaDTO.setMensagem("Este e-mail já existe!");
             return ResponseEntity.badRequest().body(respostaDTO);
         }else{
         respostaDTO.setMensagem("Usuário não encontrado!");
-        return ResponseEntity.badRequest().body(respostaDTO);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respostaDTO);
+        }
     }
-}
 
     @DeleteMapping("/{email}")
     public ResponseEntity<RespostaDTO> deletarUsuario(@PathVariable String email) {
@@ -53,9 +53,12 @@ public class UsuarioController {
         if (respostaDTO.getMensagem().equals("sucesso")) {
             respostaDTO.setMensagem("Usuario deletado com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
-        }else{
+        } else if (respostaDTO.getMensagem().equals("vinculado")) {
+            respostaDTO.setMensagem("Usuário vinculado em tarefas!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(respostaDTO);
+        } else {
             respostaDTO.setMensagem("Usuário não existe!");
-            return ResponseEntity.badRequest().body(respostaDTO);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respostaDTO);
         }
     }
 

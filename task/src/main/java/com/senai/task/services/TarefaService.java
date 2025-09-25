@@ -21,45 +21,51 @@ public class TarefaService {
     }
 
     public RespostaDTO criarTarefa(TarefaDTO dados){
-        Optional<UsuarioModel> usuarioOP = usuarioRepository.findByEmail(dados.getEmailUsuario());
 
+        UsuarioModel usuario = usuarioRepository.findByEmail(dados.getEmailUsuario())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+
+        boolean existe = tarefaRepository.existsByUsuarioEmailAndDataAgendamento(dados.getEmailUsuario(), dados.getDataAgendamento());
+        if (existe) {
+            throw new RuntimeException("Usuário já possui agenda para a data informada!");
+        }
             TarefaModel tarefaModels = new TarefaModel();
             tarefaModels.setTitulo(dados.getTitulo());
             tarefaModels.setDescricao(dados.getDescricao());
             tarefaModels.setDataAgendamento(dados.getDataAgendamento());
             tarefaModels.setStatus(dados.getStatus());
-            tarefaModels.setUsuario(usuarioOP.get());
+            tarefaModels.setUsuario(usuario);
             tarefaRepository.save(tarefaModels);
             RespostaDTO respostaDTO = new RespostaDTO();
-            respostaDTO.setMensagem("sucesso");
+            respostaDTO.setMensagem("Tarefa inserida com sucesso!");
             return respostaDTO;
         }
 
     public RespostaDTO atualizarTarefa(Long id, TarefaDTO dados){
-        Optional<UsuarioModel> usuarioModel = usuarioRepository.findByEmail(dados.getEmailUsuario());
+        Optional<UsuarioModel> usuarioOP = usuarioRepository.findByEmail(dados.getEmailUsuario());
 
-        if (usuarioModel.isPresent()) {
-            Optional<TarefaModel> model = tarefaRepository.findById(id);
+        if (usuarioOP.isPresent()) {
+            Optional<TarefaModel> OP = tarefaRepository.findById(id);
 
-            if (model.isPresent()) {
-                TarefaModel tarefaModel = model.get();
+            if (OP.isPresent()) {
+                TarefaModel tarefaModel = OP.get();
                 tarefaModel.setTitulo(dados.getTitulo());
                 tarefaModel.setDescricao(dados.getDescricao());
                 tarefaModel.setDataAgendamento(dados.getDataAgendamento());
                 tarefaModel.setStatus(dados.getStatus());
-                tarefaModel.setUsuario(model.get().getUsuario());
+                tarefaModel.setUsuario(usuarioOP.get());
                 tarefaRepository.save(tarefaModel);
                 RespostaDTO respostaDTO = new RespostaDTO();
                 respostaDTO.setMensagem("sucesso");
                 return respostaDTO;
             }else{
                 RespostaDTO respostaDTO = new RespostaDTO();
-                respostaDTO.setMensagem("Não foi possível atualizar a tarefa!");
+                respostaDTO.setMensagem("Tarefa não encontrada!");
                 return respostaDTO;
             }
         }
         RespostaDTO respostaDTO = new RespostaDTO();
-        respostaDTO.setMensagem("Usuário não existe!");
+        respostaDTO.setMensagem("Usuário da tarefa não encontrado!");
         return respostaDTO;
     }
 
@@ -74,19 +80,13 @@ public class TarefaService {
             return respostaDTO;
         }
         RespostaDTO respostaDTO = new RespostaDTO();
-        respostaDTO.setMensagem("Não foi possível excluir a tarefa!");
+        respostaDTO.setMensagem("Tarefa não encontrada!");
         return respostaDTO;
     }
 
     public List<TarefaDTO> listarTarefas(){
         List<TarefaDTO> tarefaDTOs = new ArrayList<>();
         List<TarefaModel> tarefaModels = tarefaRepository.findAll();
-
-        if (tarefaModels.isEmpty()) {
-            RespostaDTO respostaDTO = new RespostaDTO();
-            respostaDTO.setMensagem("Lista vazia!");
-            return tarefaDTOs;
-        }
 
         for (TarefaModel tarefaModel : tarefaModels) {
             TarefaDTO tarefaDTO = new TarefaDTO();
