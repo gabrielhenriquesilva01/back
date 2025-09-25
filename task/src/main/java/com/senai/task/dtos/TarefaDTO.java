@@ -6,14 +6,10 @@ import java.util.Date;
 
 public class TarefaDTO {
     private Long id;
-    @Column(nullable = false)
     private String titulo;
-    @Column(nullable = false)
     private String descricao;
-    @Column(nullable = false)
     private Date dataAgendamento;
     private String status;
-    @Column(nullable = false)
     private String emailUsuario;
 
     public TarefaDTO() {

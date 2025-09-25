@@ -20,46 +20,60 @@ public class UsuarioService {
         this.tarefaRepository = tarefaRepository;
     }
 
-    public boolean criarUsuario(UsuarioDTO dados){
+    public RespostaDTO criarUsuario(UsuarioDTO dados){
         Optional<UsuarioModel> model = usuarioRepository.findByEmail(dados.getEmail());
 
         if (model.isPresent()) {
-            return false;
+            RespostaDTO respostaDTO = new RespostaDTO();
+            respostaDTO.setMensagem("Este usuário já existe!");
+            return respostaDTO;
         }
 
         UsuarioModel usuarioModel = new UsuarioModel();
         usuarioModel.setNome(dados.getNome());
         usuarioModel.setEmail(dados.getEmail());
         usuarioRepository.save(usuarioModel);
-        return true;
+        RespostaDTO respostaDTO = new RespostaDTO();
+        respostaDTO.setMensagem("sucesso");
+        return respostaDTO;
     }
 
-    public boolean atualizarUsuario(String email, UsuarioDTO dados){
+    public RespostaDTO atualizarUsuario(String email, UsuarioDTO dados){
         Optional<UsuarioModel> model = usuarioRepository.findByEmail(email);
 
         if (model.isPresent()) {
             Optional<UsuarioModel> emailExistente = usuarioRepository.findByEmail(dados.getEmail());
             if (emailExistente.isPresent() && !emailExistente.get().getEmail().equals(email)) {
-                return false;
+                RespostaDTO respostaDTO = new RespostaDTO();
+                respostaDTO.setMensagem("email");
+                return respostaDTO;
             }
             UsuarioModel usuarioModel = model.get();
             usuarioModel.setNome(dados.getNome());
             usuarioModel.setEmail(dados.getEmail());
             usuarioRepository.save(usuarioModel);
-            return true;
+            RespostaDTO respostaDTO = new RespostaDTO();
+            respostaDTO.setMensagem("sucesso");
+            return respostaDTO;
         }
-        return false;
+        RespostaDTO respostaDTO = new RespostaDTO();
+        respostaDTO.setMensagem("Usuário não encontrado!");
+        return respostaDTO;
     }
 
-    public boolean deletarUsuario(String email){
+    public RespostaDTO deletarUsuario(String email){
         Optional<UsuarioModel> model = usuarioRepository.findByEmail(email);
 
         if (model.isPresent()) {
             UsuarioModel usuarioModel = model.get();
             usuarioRepository.delete(usuarioModel);
-            return true;
+            RespostaDTO respostaDTO = new RespostaDTO();
+            respostaDTO.setMensagem("sucesso");
+            return respostaDTO;
         }
-        return false;
+        RespostaDTO respostaDTO = new RespostaDTO();
+        respostaDTO.setMensagem("Usuário não existe!");
+        return respostaDTO;
     }
 
     public List<UsuarioDTO> obterUsuarios(){

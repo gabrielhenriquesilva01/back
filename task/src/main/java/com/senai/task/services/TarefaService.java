@@ -21,37 +21,19 @@ public class TarefaService {
     }
 
     public RespostaDTO criarTarefa(TarefaDTO dados){
-        Optional<UsuarioModel> model = usuarioRepository.findByEmail(dados.getEmailUsuario());
+        Optional<UsuarioModel> usuarioOP = usuarioRepository.findByEmail(dados.getEmailUsuario());
 
-        if (model.isPresent()) {
-            if (model.get().equals(dados.getDataAgendamento())) {
-                RespostaDTO respostaDTO = new RespostaDTO();
-                respostaDTO.setMensagem("Este usuário já possuí agenda para a data informada!");
-                return respostaDTO;
-            }
-
-            Optional<TarefaModel> tarefaOP = tarefaRepository.findByTitulo(dados.getTitulo());
-            if (tarefaOP.isPresent()) {
-                RespostaDTO respostaDTO = new RespostaDTO();
-                respostaDTO.setMensagem("Esta tarefa já esta vinculada!");
-                return respostaDTO;
-            }
-
-            TarefaModel tarefaModel = new TarefaModel();
-            tarefaModel.setTitulo(dados.getTitulo());
-            tarefaModel.setDescricao(dados.getDescricao());
-            tarefaModel.setDataAgendamento(dados.getDataAgendamento());
-            tarefaModel.setStatus(dados.getStatus());
-            tarefaModel.setUsuario(tarefaOP.get().getUsuario());
-            tarefaRepository.save(tarefaModel);
+            TarefaModel tarefaModels = new TarefaModel();
+            tarefaModels.setTitulo(dados.getTitulo());
+            tarefaModels.setDescricao(dados.getDescricao());
+            tarefaModels.setDataAgendamento(dados.getDataAgendamento());
+            tarefaModels.setStatus(dados.getStatus());
+            tarefaModels.setUsuario(usuarioOP.get());
+            tarefaRepository.save(tarefaModels);
             RespostaDTO respostaDTO = new RespostaDTO();
             respostaDTO.setMensagem("sucesso");
             return respostaDTO;
         }
-        RespostaDTO respostaDTO = new RespostaDTO();
-        respostaDTO.setMensagem("Usuário da tarefa não encontrado!");
-        return respostaDTO;
-    }
 
     public RespostaDTO atualizarTarefa(Long id, TarefaDTO dados){
         Optional<UsuarioModel> usuarioModel = usuarioRepository.findByEmail(dados.getEmailUsuario());

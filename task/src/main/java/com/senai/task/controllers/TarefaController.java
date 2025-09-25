@@ -3,6 +3,7 @@ package com.senai.task.controllers;
 import com.senai.task.dtos.RespostaDTO;
 import com.senai.task.dtos.TarefaDTO;
 import com.senai.task.services.TarefaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,12 +25,6 @@ public class TarefaController {
         if (respostaDTO.getMensagem().equals("sucesso")){
             respostaDTO.setMensagem("Tarefa criada com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
-        }else if (respostaDTO.getMensagem().equals("Este usuário já possuí agenda para a data informada!")) {
-            respostaDTO.setMensagem("Este usuário já possuí agenda para a data informada!");
-            return ResponseEntity.badRequest().body(respostaDTO);
-        }else if(respostaDTO.getMensagem().equals("Esta tarefa já esta vinculada!")){
-            respostaDTO.setMensagem("Esta tarefa já esta vinculada!");
-            return ResponseEntity.badRequest().body(respostaDTO);
         }else{
             respostaDTO.setMensagem("Usuário não encontrado!");
             return ResponseEntity.badRequest().body(respostaDTO);
@@ -37,14 +32,17 @@ public class TarefaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RespostaDTO> atualizarTarefa(@PathVariable Long id, @RequestBody TarefaDTO dados){
+    public ResponseEntity<RespostaDTO> atualizarTarefa(@PathVariable Long id, @RequestBody TarefaDTO dados) {
         RespostaDTO respostaDTO = service.atualizarTarefa(id, dados);
-        if (respostaDTO.getMensagem().equals("sucesso")){
+        if ( respostaDTO.getMensagem().equals("sucesso") ) {
             respostaDTO.setMensagem("Tarefa atualizada com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
-        }else{
-            respostaDTO.setMensagem("Essa tarefa já existe!");
+        } else if ( respostaDTO.getMensagem().equals("Não foi possível atualizar a tarefa!") ) {
+            respostaDTO.setMensagem("Não foi possível atualizar a tarefa!");
             return ResponseEntity.badRequest().body(respostaDTO);
+            }else{
+            respostaDTO.setMensagem("Usuário não encontrado!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respostaDTO);
         }
     }
 

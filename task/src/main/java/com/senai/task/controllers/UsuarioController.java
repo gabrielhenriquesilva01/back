@@ -2,9 +2,12 @@ package com.senai.task.controllers;
 
 import com.senai.task.dtos.*;
 import com.senai.task.services.UsuarioService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,12 +22,11 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<RespostaDTO> criarUsuario(@RequestBody UsuarioDTO dados) {
-        boolean criado = (service.criarUsuario(dados));
-        RespostaDTO respostaDTO = new RespostaDTO();
-        if (criado) {
+        RespostaDTO respostaDTO = (service.criarUsuario(dados));
+        if (respostaDTO.getMensagem().equals("sucesso")) {
             respostaDTO.setMensagem("Usuario criado com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
-        } else {
+        }else{
             respostaDTO.setMensagem("Este usuário já existe!");
             return ResponseEntity.badRequest().body(respostaDTO);
         }
@@ -32,11 +34,13 @@ public class UsuarioController {
 
     @PutMapping("/{email}")
     public ResponseEntity<RespostaDTO> atualizarUsuario(@PathVariable String email, @RequestBody UsuarioDTO dados) {
-        boolean atualizado = service.atualizarUsuario(email, dados);
-        RespostaDTO respostaDTO = new RespostaDTO();
-        if (atualizado) {
+        RespostaDTO respostaDTO = service.atualizarUsuario(email, dados);
+        if (respostaDTO.getMensagem().equals("sucesso")) {
             respostaDTO.setMensagem("Usuario atualizado com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
+        }else if (respostaDTO.getMensagem().equals("email")) {
+            respostaDTO.setMensagem("Este E-mail já existe!");
+            return ResponseEntity.badRequest().body(respostaDTO);
         }else{
         respostaDTO.setMensagem("Usuário não encontrado!");
         return ResponseEntity.badRequest().body(respostaDTO);
@@ -45,9 +49,8 @@ public class UsuarioController {
 
     @DeleteMapping("/{email}")
     public ResponseEntity<RespostaDTO> deletarUsuario(@PathVariable String email) {
-        boolean criado = service.deletarUsuario(email);
-        RespostaDTO respostaDTO = new RespostaDTO();
-        if (criado) {
+        RespostaDTO respostaDTO = service.deletarUsuario(email);
+        if (respostaDTO.getMensagem().equals("sucesso")) {
             respostaDTO.setMensagem("Usuario deletado com sucesso!");
             return ResponseEntity.ok().body(respostaDTO);
         }else{
@@ -57,11 +60,11 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity <List<UsuarioDTO>> obterUsuarios() {
-        RespostaDTO respostaDTO = new RespostaDTO();
-        if (service.obterUsuarios() == null) {
-            respostaDTO.setMensagem("Lista vazia!");
-            return ResponseEntity.ok().body(service.obterUsuarios());
+    public ResponseEntity<List<UsuarioDTO>> obterUsuarios() {
+        List<UsuarioDTO> usuarioDTOS = service.obterUsuarios();
+
+        if (usuarioDTOS.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ArrayList<UsuarioDTO>());
         }
         return ResponseEntity.ok().body(service.obterUsuarios());
     }

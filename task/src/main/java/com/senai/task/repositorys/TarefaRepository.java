@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<TarefaModel, Long> {
-    Optional<TarefaModel> findByTitulo(String titulo);
 }
