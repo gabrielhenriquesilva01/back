@@ -1,8 +1,6 @@
 package com.senai.projetosa.controllers;
 
-import com.senai.projetosa.dtos.RequisicaoDTO;
-import com.senai.projetosa.dtos.RespostaDTO;
-import com.senai.projetosa.dtos.UsuarioDTO;
+import com.senai.projetosa.dtos.*;
 import com.senai.projetosa.services.UsuarioService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
