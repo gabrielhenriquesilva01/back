@@ -12,8 +12,6 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    private List<UsuarioModel> listaUsuario = new ArrayList<UsuarioModel>();
-
     private final UsuarioRepository repository;
 
     public UsuarioService(UsuarioRepository repository) {
@@ -69,6 +67,7 @@ public class UsuarioService {
         Optional<UsuarioModel> usuarioOP = repository.findById(id);
 
         if (usuarioOP.isPresent()){
+            usuarioDto.setId(usuarioOP.get().getId());
             usuarioDto.setNome(usuarioOP.get().getNome());
             usuarioDto.setEmail(usuarioOP.get().getEmail());
             usuarioDto.setSenha(usuarioOP.get().getSenha());
@@ -83,6 +82,7 @@ public class UsuarioService {
 
         for (UsuarioModel usuario : listaUsuarioModel){
             UsuarioDTO usuarioDto = new UsuarioDTO();
+            usuarioDto.setId(usuario.getId());
             usuarioDto.setNome(usuario.getNome());
             usuarioDto.setEmail(usuario.getEmail());
             usuarioDto.setSenha(usuario.getSenha());

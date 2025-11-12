@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class UsuarioDTO {
 
+    private Long id;
     private String nome;
     private String email;
     private String senha;
@@ -11,6 +12,14 @@ public class UsuarioDTO {
     private LocalDate dataNascimento;
 
     public UsuarioDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {

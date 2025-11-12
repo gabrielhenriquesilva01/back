@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class RecursoDTO {
 
+    private Long id;
     private String descricao;
     private String tipo;
     private String diasDisponivel;
@@ -17,6 +18,14 @@ public class RecursoDTO {
 
     public String getDescricao() {
         return descricao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setDescricao(String descricao) {

@@ -1,12 +1,25 @@
 package com.senai.projetosa.dtos;
 
+import java.time.LocalDate;
+
 public class RequisicaoDTO {
 
+    private Long id;
     private String nome;
     private String email;
     private String senha;
+    private int matricula;
+    private LocalDate dataNascimento;
 
     public RequisicaoDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -31,5 +44,21 @@ public class RequisicaoDTO {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 }

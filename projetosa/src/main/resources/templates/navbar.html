@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!-- Barra de navegação -->
+
+<!-- Navbar com os links para acessar as páginas -->
+<nav th:fragment="navigation" class="navbar navbar-expand-lg navbar-dark py-0" style="background-color: #000000;">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand mb-0 h1 ms-5 me-5" href="#">Senai</a>
+
+        <!-- Botão responsivo (hambúrguer) (só aparece quando a resolução é muito pequena -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links de navegação do navbar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!--Item para acessar a lista de usuários -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/usuariolista">Usuários</a>
+                </li>
+                <!--Item para acessar a lista de categorias -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/recursolista">Recursos</a>
+                </li>
+                <!--Item para acessar a lista de produtos -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/agendamentolista">Agendamentos</a>
+                </li>
+            </ul>
+
+            <!-- Botão de sair alinhado à direita -->
+            <form class="d-flex" th:action="@{/login?logout}" th:method="get">
+                <button class="btn btn-outline-light" type="submit">Sair</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

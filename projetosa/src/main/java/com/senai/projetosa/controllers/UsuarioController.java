@@ -19,11 +19,11 @@ public class UsuarioController {
 
     @PostMapping
     public String cadastrar(@ModelAttribute("usuarioDto")RequisicaoDTO usuarioDTO){
-        RespostaDTO respostaDTO = service.cadastrar(usuarioDTO);
+        service.cadastrar(usuarioDTO);
         return "redirect:/usuariolista";
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public String atualizar(@ModelAttribute("usuarioDto")UsuarioDTO usuarioDTO, @PathVariable Long id){
         service.atualizar(id, usuarioDTO);
         return "redirect:/usuariolista";
@@ -31,7 +31,6 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RespostaDTO> excluir(@PathVariable Long id){
-
         RespostaDTO resposta = service.excluir(id);
 
         if (resposta.getMensagem().equals("sucesso")) {
